@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Square, Moon, Sun } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useAdmin } from '../contexts/AdminContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const { siteSettings } = useAdmin();
 
   const navigation = [
     { name: 'Services', href: '/services' },
@@ -23,8 +25,8 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Square className="h-8 w-8 text-emerald-600" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">VEXTRONIC</span>
+              <Square className="h-8 w-8" style={{ color: siteSettings.primaryColor }} />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">{siteSettings.siteName}</span>
             </Link>
           </div>
 
@@ -36,9 +38,13 @@ const Header = () => {
                   to={item.href}
                   className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
                     isActive(item.href)
-                      ? 'text-emerald-600'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-emerald-600'
+                      ? ''
+                      : 'text-gray-600 dark:text-gray-300'
                   }`}
+                  style={{ 
+                    color: isActive(item.href) ? siteSettings.primaryColor : undefined,
+                    ':hover': { color: siteSettings.primaryColor }
+                  }}
                 >
                   {item.name}
                 </Link>
@@ -49,15 +55,25 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-4">
             <button 
               onClick={toggleDarkMode}
-              className="p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition-colors duration-200"
+              className="p-2 text-gray-600 dark:text-gray-300 transition-colors duration-200"
+              style={{ ':hover': { color: siteSettings.primaryColor } }}
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
-            <button className="text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition-colors duration-200">
+            <button 
+              className="text-gray-600 dark:text-gray-300 transition-colors duration-200"
+              style={{ ':hover': { color: siteSettings.primaryColor } }}
+            >
               Login
             </button>
-            <button className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors duration-200">
+            <button 
+              className="text-white px-4 py-2 rounded-lg transition-colors duration-200"
+              style={{ 
+                backgroundColor: siteSettings.primaryColor,
+                ':hover': { backgroundColor: `${siteSettings.primaryColor}dd` }
+              }}
+            >
               Get Started
             </button>
           </div>
@@ -85,9 +101,13 @@ const Header = () => {
                   to={item.href}
                   className={`block px-3 py-2 text-base font-medium transition-colors duration-200 ${
                     isActive(item.href)
-                      ? 'text-emerald-600'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-emerald-600'
+                      ? ''
+                      : 'text-gray-600 dark:text-gray-300'
                   }`}
+                  style={{ 
+                    color: isActive(item.href) ? siteSettings.primaryColor : undefined,
+                    ':hover': { color: siteSettings.primaryColor }
+                  }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
@@ -96,15 +116,25 @@ const Header = () => {
               <div className="px-3 py-2 space-y-2">
                 <button 
                   onClick={toggleDarkMode}
-                  className="flex items-center gap-2 w-full text-left text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition-colors duration-200"
+                  className="flex items-center gap-2 w-full text-left text-gray-600 dark:text-gray-300 transition-colors duration-200"
+                  style={{ ':hover': { color: siteSettings.primaryColor } }}
                 >
                   {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                   {isDarkMode ? 'Light Mode' : 'Dark Mode'}
                 </button>
-                <button className="block w-full text-left text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition-colors duration-200">
+                <button 
+                  className="block w-full text-left text-gray-600 dark:text-gray-300 transition-colors duration-200"
+                  style={{ ':hover': { color: siteSettings.primaryColor } }}
+                >
                   Login
                 </button>
-                <button className="block w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors duration-200">
+                <button 
+                  className="block w-full text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                  style={{ 
+                    backgroundColor: siteSettings.primaryColor,
+                    ':hover': { backgroundColor: `${siteSettings.primaryColor}dd` }
+                  }}
+                >
                   Get Started
                 </button>
               </div>

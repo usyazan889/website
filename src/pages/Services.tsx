@@ -1,7 +1,13 @@
 import React from 'react';
 import { Code, Palette, Zap, Shield, TrendingUp, Server, ArrowRight, Check } from 'lucide-react';
+import { useAdmin } from '../contexts/AdminContext';
 
 const Services = () => {
+  const { services: adminServices, siteSettings } = useAdmin();
+  
+  // Filter only visible services
+  const visibleServices = adminServices.filter(service => service.visible);
+
   const serviceCategories = [
     'Web Development',
     'Mobile Apps',
@@ -11,93 +17,6 @@ const Services = () => {
     'Database Design',
     'Cloud Services',
     'DevOps'
-  ];
-
-  const services = [
-    {
-      title: 'Custom Website Development',
-      description: 'Professional, responsive websites built with modern technologies and optimized for performance.',
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['React', 'Node.js', 'TypeScript'],
-      category: 'Web Development'
-    },
-    {
-      title: 'Mobile App Development',
-      description: 'Native and cross-platform mobile applications for iOS and Android with seamless user experiences.',
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['React Native', 'Flutter', 'Swift'],
-      category: 'Mobile Development'
-    },
-    {
-      title: 'UI/UX Design Services',
-      description: 'User-centered design approach creating intuitive interfaces and exceptional user experiences.',
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Figma', 'Adobe XD', 'Sketch'],
-      category: 'Design'
-    },
-    {
-      title: 'E-commerce Solutions',
-      description: 'Complete online stores with payment integration, inventory management, and customer analytics.',
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Shopify', 'WooCommerce', 'Stripe'],
-      category: 'E-commerce'
-    },
-    {
-      title: 'Digital Marketing Strategy',
-      description: 'Comprehensive marketing campaigns including SEO, social media, and content marketing strategies.',
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Google Analytics', 'SEMrush', 'HubSpot'],
-      category: 'Marketing'
-    },
-    {
-      title: 'Cloud Infrastructure',
-      description: 'Scalable cloud solutions with automated deployment, monitoring, and disaster recovery.',
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['AWS', 'Azure', 'Docker'],
-      category: 'Cloud Services'
-    },
-    {
-      title: 'Cybersecurity Audit',
-      description: 'Comprehensive security assessment including penetration testing and vulnerability analysis.',
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['OWASP', 'Nessus', 'Metasploit'],
-      category: 'Security'
-    },
-    {
-      title: 'AI & Machine Learning',
-      description: 'Custom AI solutions including chatbots, predictive analytics, and automation systems.',
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['TensorFlow', 'PyTorch', 'OpenAI'],
-      category: 'AI/ML'
-    },
-    {
-      title: 'Data Analytics Platform',
-      description: 'Business intelligence dashboards with real-time data visualization and reporting capabilities.',
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Tableau', 'Power BI', 'Python'],
-      category: 'Analytics'
-    },
-    {
-      title: 'DevOps & Automation',
-      description: 'Streamlined development workflows with CI/CD pipelines and infrastructure automation.',
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Jenkins', 'Kubernetes', 'Terraform'],
-      category: 'DevOps'
-    },
-    {
-      title: 'Enterprise Solutions',
-      description: 'Scalable enterprise applications with complex integrations and advanced security features.',
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Java', '.NET', 'Oracle'],
-      category: 'Enterprise'
-    },
-    {
-      title: 'Business Process Automation',
-      description: 'Workflow automation solutions to streamline operations and improve efficiency across departments.',
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=600',
-      technologies: ['Zapier', 'Microsoft Flow', 'Custom APIs'],
-      category: 'Automation'
-    }
   ];
 
   const mainCategories = [
@@ -155,7 +74,7 @@ const Services = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
-              Our <span className="text-emerald-600">Services</span>
+              Our <span style={{ color: siteSettings.primaryColor }}>Services</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8 transition-colors duration-300">
               Explore our collection of digital services and technologies. Each service represents our commitment to excellence and innovation in the digital landscape.
@@ -183,12 +102,17 @@ const Services = () => {
       <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
+            {visibleServices.map((service, index) => (
               <div
-                key={index}
+                key={service.id}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
               >
-                <div className="relative h-48 bg-gradient-to-br from-emerald-400 to-emerald-600">
+                <div 
+                  className="relative h-48 bg-gradient-to-br"
+                  style={{ 
+                    background: `linear-gradient(to bottom right, ${siteSettings.primaryColor}80, ${siteSettings.primaryColor})` 
+                  }}
+                >
                   <img
                     src={service.image}
                     alt={service.title}
@@ -220,11 +144,16 @@ const Services = () => {
 
                   <div className="flex justify-between items-center">
                     <button className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium transition-colors duration-200">
-                      View Project <ArrowRight className="h-4 w-4" />
+                      <span style={{ color: siteSettings.primaryColor }}>View Project</span> <ArrowRight className="h-4 w-4" />
                     </button>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold" style={{ color: siteSettings.primaryColor }}>
+                        {service.price}
+                      </span>
                     <button className="border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:border-emerald-600 hover:text-emerald-600 transition-colors duration-200">
                       Contact Expert
                     </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -273,7 +202,7 @@ const Services = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-emerald-600 py-20">
+      <section className="py-20" style={{ backgroundColor: siteSettings.primaryColor }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">
             Need a Custom Solution?
@@ -282,6 +211,10 @@ const Services = () => {
             Have a unique project in mind? Our expert team can create tailored solutions that perfectly fit your business requirements and goals.
           </p>
           <button className="bg-white text-emerald-600 px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 font-medium">
+          <button 
+            className="bg-white px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 font-medium"
+            style={{ color: siteSettings.primaryColor }}
+          >
             Contact Us Today
           </button>
         </div>

@@ -1,8 +1,11 @@
 import React from 'react';
 import { ArrowRight, Code, Palette, Zap, Shield, TrendingUp, Server } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAdmin } from '../contexts/AdminContext';
 
 const Home = () => {
+  const { siteSettings } = useAdmin();
+
   const serviceCards = [
     {
       title: 'React',
@@ -91,16 +94,22 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
-                Digital Services for a{' '}
-                <span className="text-blue-400">Growth Mindset</span>
+                {siteSettings.heroTitle.split(' ').slice(0, -2).join(' ')}{' '}
+                <span style={{ color: siteSettings.primaryColor }}>
+                  {siteSettings.heroTitle.split(' ').slice(-2).join(' ')}
+                </span>
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed transition-colors duration-300">
-                Transform your business with our comprehensive suite of digital services. From development to design, AI to cybersecurity - we deliver excellence.
+                {siteSettings.heroSubtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/services"
-                  className="bg-emerald-600 text-white px-8 py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-200 text-center font-medium"
+                  className="text-white px-8 py-3 rounded-lg transition-colors duration-200 text-center font-medium"
+                  style={{ 
+                    backgroundColor: siteSettings.primaryColor,
+                    ':hover': { backgroundColor: `${siteSettings.primaryColor}dd` }
+                  }}
                 >
                   Explore Services
                 </Link>
@@ -131,8 +140,12 @@ const Home = () => {
                       {card.description}
                     </p>
                     <button className={`text-sm font-medium flex items-center gap-2 ${
-                      card.dark ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400'
+                      card.dark ? 'hover:opacity-80' : 'hover:opacity-80'
                     } transition-colors duration-200`}>
+                    <button 
+                      className="text-sm font-medium flex items-center gap-2 hover:opacity-80 transition-colors duration-200"
+                      style={{ color: siteSettings.primaryColor }}
+                    >
                       {card.buttonText}
                       <ArrowRight className="h-4 w-4" />
                     </button>
@@ -150,7 +163,10 @@ const Home = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-4xl lg:text-5xl font-bold text-emerald-600 mb-2">
+                <div 
+                  className="text-4xl lg:text-5xl font-bold mb-2"
+                  style={{ color: siteSettings.primaryColor }}
+                >
                   {stat.number}
                 </div>
                 <div className="text-gray-400 dark:text-gray-300 transition-colors duration-300">{stat.label}</div>
@@ -190,8 +206,12 @@ const Home = () => {
                     {category.description}
                   </p>
                   <button className={`flex items-center gap-2 font-medium ${
-                    category.dark ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700'
+                    category.dark ? 'hover:opacity-80' : 'hover:opacity-80'
                   } transition-colors duration-200`}>
+                  <button 
+                    className="flex items-center gap-2 font-medium hover:opacity-80 transition-colors duration-200"
+                    style={{ color: siteSettings.primaryColor }}
+                  >
                     Explore <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -213,13 +233,23 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/contact"
-              className="bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium"
+              className="text-white px-8 py-3 rounded-lg transition-colors duration-200 font-medium"
+              style={{ 
+                backgroundColor: siteSettings.secondaryColor,
+                ':hover': { backgroundColor: `${siteSettings.secondaryColor}dd` }
+              }}
             >
               Start Your Project
             </Link>
             <Link
               to="/services"
-              className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-lg hover:border-emerald-600 hover:text-emerald-600 transition-colors duration-200 font-medium"
+              className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-lg transition-colors duration-200 font-medium"
+              style={{ 
+                ':hover': { 
+                  borderColor: siteSettings.primaryColor,
+                  color: siteSettings.primaryColor
+                }
+              }}
             >
               View All Services
             </Link>
